@@ -43,6 +43,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [photoUrl, setPhotoUrl] = useState("");
 
   function set<K extends keyof CarValues>(key: K, value: CarValues[K]) {
     setV((prev) => ({ ...prev, [key]: value }));
@@ -63,6 +64,18 @@ export function CarForm({ initial }: { initial?: CarValues }) {
       return;
     }
     set("photos", [...v.photos, ...data.urls]);
+  }
+
+  function addPhotoUrl() {
+    const url = photoUrl.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) {
+      setError("Image URL must start with http:// or https://");
+      return;
+    }
+    if (!v.photos.includes(url)) set("photos", [...v.photos, url]);
+    setPhotoUrl("");
+    setError(null);
   }
 
   function removePhoto(url: string) {
@@ -245,6 +258,27 @@ export function CarForm({ initial }: { initial?: CarValues }) {
         {uploading && (
           <p className="mt-1 text-xs text-gray-500">Uploading…</p>
         )}
+        <div className="mt-2 flex gap-2">
+          <input
+            type="url"
+            className="input flex-1"
+            placeholder="…or paste an image URL (https://…)"
+            value={photoUrl}
+            onChange={(e) => setPhotoUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addPhotoUrl();
+              }
+            }}
+          />
+          <button type="button" onClick={addPhotoUrl} className="btn-secondary">
+            Add
+          </button>
+        </div>
+        <p className="mt-1 text-xs text-gray-400">
+          On the hosted demo, use image URLs (file uploads need local storage).
+        </p>
         {v.photos.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {v.photos.map((p) => (

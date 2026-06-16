@@ -28,6 +28,36 @@ fleet, handle bookings, and track earnings.
 Next.js 14 (App Router) · TypeScript · Prisma · PostgreSQL · Tailwind CSS ·
 Zod · jose + bcrypt for auth · Konnect for payments.
 
+## Deploy a live demo (Vercel)
+
+GitHub Pages can't host WowRent — it only serves static files, and this app
+needs a Node server, API routes, and a PostgreSQL database. **Vercel** runs it
+natively. The build automatically applies migrations and loads demo data, so
+the deployed site has cars to browse immediately.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FCyb0rgCode%2Fwowrent&env=AUTH_SECRET&envDescription=Secret%20used%20to%20sign%20session%20cookies&project-name=wowrent&repository-name=wowrent)
+
+**Steps (~5 minutes):**
+
+1. Click **Deploy** above and let Vercel clone the repo into your account.
+2. In the new Vercel project, open **Storage → Create Database → Postgres**
+   (Vercel Postgres / Neon). Connecting it automatically sets `DATABASE_URL`.
+3. Under **Settings → Environment Variables**, add `AUTH_SECRET` — any long
+   random string (e.g. run `openssl rand -base64 32`). If you didn't set it on
+   the deploy screen, add it here.
+4. Trigger a redeploy (**Deployments → ⋯ → Redeploy**). The build runs
+   `prisma migrate deploy` and seeds demo data on first run.
+5. Open the live URL and log in with a demo account below.
+
+**Notes for the hosted demo:**
+
+- **Payments** run in mock mode unless you add `KONNECT_API_KEY` and
+  `KONNECT_WALLET_ID` (see [Payments](#payments-konnect)). In mock mode the
+  booking is confirmed without a real charge — perfect for a demo.
+- **Photos**: Vercel's filesystem is read-only, so use the **"paste an image
+  URL"** option when listing a car (the seeded cars already use hosted image
+  URLs). File uploads work when running locally.
+
 ## Getting started
 
 ### 1. Prerequisites

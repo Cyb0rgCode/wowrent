@@ -8,6 +8,7 @@ import {
   forbidden,
   notFound,
   handleError,
+  getBaseUrl,
 } from "@/lib/api";
 
 export async function POST(req: Request) {
@@ -27,8 +28,7 @@ export async function POST(req: Request) {
       return badRequest("This booking is not awaiting payment");
     }
 
-    const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const appUrl = getBaseUrl(req);
     const [firstName, ...rest] = user.name.split(" ");
 
     const init = await initPayment({

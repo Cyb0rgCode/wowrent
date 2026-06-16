@@ -29,6 +29,16 @@ const PHOTOS = {
 };
 
 async function main() {
+  // Idempotent: skip if the database already has data, unless FORCE_SEED=1.
+  // This makes it safe to run automatically on every deploy.
+  const existing = await prisma.user.count();
+  if (existing > 0 && process.env.FORCE_SEED !== "1") {
+    console.log(
+      `Database already has ${existing} users — skipping seed. Set FORCE_SEED=1 to reseed.`,
+    );
+    return;
+  }
+
   console.log("Seeding WowRent…");
 
   // Clean slate (FK cascade handles dependents).

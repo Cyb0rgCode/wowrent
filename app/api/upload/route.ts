@@ -21,21 +21,31 @@ export async function POST(req: Request) {
     if (files.length === 0) return badRequest("No files uploaded");
 
     const dir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(dir, { recursive: true });
 
     const urls: string[] = [];
-    for (const file of files) {
-      if (!ALLOWED.includes(file.type)) {
-        return badRequest(`Unsupported file type: ${file.type}`);
+    try {
+      await mkdir(dir, { recursive: true });
+      for (const file of files) {
+        if (!ALLOWED.includes(file.type)) {
+          return badRequest(`Unsupported file type: ${file.type}`);
+        }
+        if (file.size > MAX_BYTES) {
+          return badRequest("Each image must be under 5 MB");
+        }
+        const ext = file.type.split("/")[1].replace("jpeg", "jpg");
+        const name = `${randomUUID()}.${ext}`;
+        const buffer = Buffer.from(await file.arrayBuffer());
+        await writeFile(path.join(dir, name), buffer);
+        urls.push(`/uploads/${name}`);
       }
-      if (file.size > MAX_BYTES) {
-        return badRequest("Each image must be under 5 MB");
+    } catch (e) {
+      const code = (e as NodeJS.ErrnoException)?.code;
+      if (code === "EROFS" || code === "EACCES" || code === "ENOENT") {
+        return badRequest(
+          "File uploads aren't available on this hosted demo. Paste an image URL instead.",
+        );
       }
-      const ext = file.type.split("/")[1].replace("jpeg", "jpg");
-      const name = `${randomUUID()}.${ext}`;
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await writeFile(path.join(dir, name), buffer);
-      urls.push(`/uploads/${name}`);
+      throw e;
     }
 
     return ok({ urls });
