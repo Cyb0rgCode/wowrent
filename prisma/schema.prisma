@@ -1,0 +1,210 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  SUPPLIER
+  ADMIN
+}
+
+enum SupplierType {
+  INDIVIDUAL
+  AGENCY
+}
+
+enum CarCategory {
+  ECONOMY
+  COMPACT
+  SEDAN
+  SUV
+  LUXURY
+  VAN
+  PICKUP
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+}
+
+enum FuelType {
+  GASOLINE
+  DIESEL
+  HYBRID
+  ELECTRIC
+}
+
+enum CarStatus {
+  ACTIVE
+  HIDDEN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  avatarUrl    String?
+  role         Role     @default(CLIENT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  supplierProfile SupplierProfile?
+  bookings        Booking[]        @relation("ClientBookings")
+  reviews         Review[]         @relation("AuthorReviews")
+  sentMessages    Message[]        @relation("SentMessages")
+
+  clientConversations   Conversation[] @relation("ClientConversations")
+  supplierConversations Conversation[] @relation("SupplierConversations")
+}
+
+model SupplierProfile {
+  id              String       @id @default(cuid())
+  userId          String       @unique
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            SupplierType @default(INDIVIDUAL)
+  businessName    String
+  bio             String?
+  location        String?
+  verified        Boolean      @default(false)
+  konnectWalletId String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  cars Car[]
+}
+
+model Car {
+  id           String       @id @default(cuid())
+  supplierId   String
+  supplier     SupplierProfile @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  title        String
+  make         String
+  model        String
+  year         Int
+  category     CarCategory
+  transmission Transmission @default(MANUAL)
+  fuel         FuelType     @default(GASOLINE)
+  seats        Int          @default(5)
+  pricePerDay  Float
+  currency     String       @default("TND")
+  location     String
+  description  String       @default("")
+  photos       String[]     @default([])
+  status       CarStatus    @default(ACTIVE)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  bookings      Booking[]
+  reviews       Review[]
+  conversations Conversation[]
+
+  @@index([location])
+  @@index([category])
+  @@index([status])
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  carId      String
+  car        Car           @relation(fields: [carId], references: [id], onDelete: Cascade)
+  clientId   String
+  client     User          @relation("ClientBookings", fields: [clientId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime
+  days       Int
+  dailyRate  Float
+  subtotal   Float
+  serviceFee Float
+  total      Float
+  currency   String        @default("TND")
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  payment Payment?
+  review  Review?
+
+  @@index([carId, startDate, endDate])
+  @@index([clientId])
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  bookingId         String        @unique
+  booking           Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  konnectPaymentRef String?
+  amount            Float
+  commission        Float
+  currency          String        @default("TND")
+  status            PaymentStatus @default(PENDING)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  carId     String
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation("AuthorReviews", fields: [authorId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([carId])
+}
+
+model Conversation {
+  id         String   @id @default(cuid())
+  carId      String?
+  car        Car?     @relation(fields: [carId], references: [id], onDelete: SetNull)
+  clientId   String
+  client     User     @relation("ClientConversations", fields: [clientId], references: [id], onDelete: Cascade)
+  supplierId String
+  supplier   User     @relation("SupplierConversations", fields: [supplierId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  messages Message[]
+
+  @@unique([clientId, supplierId, carId])
+  @@index([clientId])
+  @@index([supplierId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  body           String
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
