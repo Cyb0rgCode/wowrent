@@ -175,26 +175,22 @@ async function createSchema(prisma: PrismaClient) {
 
 const PHOTOS = {
   golf: [
-    "https://images.unsplash.com/photo-1619976215249-0cba7e798bdf?w=1200&q=80",
-    "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1200&q=80",
+    "https://www.automoli.com/common/vehicles/_assets/img/gallery/f89/volkswagen-golf-vii.jpg",
   ],
   clio: [
-    "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=1200&q=80",
-    "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=1200&q=80",
+    "https://upload.wikimedia.org/wikipedia/commons/5/59/Renault_Clio_V_Genf_2019_1Y7A5590.jpg",
   ],
   suv: [
-    "https://images.unsplash.com/photo-1622838320197-0f4845354bba?w=1200&q=80",
-    "https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?w=1200&q=80",
+    "https://www.tunisia-rentcar.com/blog/wp-content/uploads/2018/11/2019_Hyundai_Tucson_Limited_0-1-1024x683.jpeg",
   ],
   luxury: [
-    "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200&q=80",
-    "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=1200&q=80",
+    "https://stimg.cardekho.com/images/carexteriorimages/630x420/Mercedes-Benz/C-Class/10858/1774342866770/front-left-side-47.jpg",
   ],
   van: [
-    "https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=1200&q=80",
+    "https://upload.wikimedia.org/wikipedia/commons/2/2a/2012_Dacia_Dokker.JPG",
   ],
   pickup: [
-    "https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=1200&q=80",
+    "https://www.auto-plus.tn/assets/modules/newcars/isuzu/dmax-2p/couverture/isuzu_dmax-2p.jpg",
   ],
 };
 
