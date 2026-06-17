@@ -4,24 +4,12 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 const PHOTOS = {
-  golf: [
-    "https://www.automoli.com/common/vehicles/_assets/img/gallery/f89/volkswagen-golf-vii.jpg",
-  ],
-  clio: [
-    "https://upload.wikimedia.org/wikipedia/commons/5/59/Renault_Clio_V_Genf_2019_1Y7A5590.jpg",
-  ],
-  suv: [
-    "https://www.tunisia-rentcar.com/blog/wp-content/uploads/2018/11/2019_Hyundai_Tucson_Limited_0-1-1024x683.jpeg",
-  ],
-  luxury: [
-    "https://stimg.cardekho.com/images/carexteriorimages/630x420/Mercedes-Benz/C-Class/10858/1774342866770/front-left-side-47.jpg",
-  ],
-  van: [
-    "https://upload.wikimedia.org/wikipedia/commons/2/2a/2012_Dacia_Dokker.JPG",
-  ],
-  pickup: [
-    "https://www.auto-plus.tn/assets/modules/newcars/isuzu/dmax-2p/couverture/isuzu_dmax-2p.jpg",
-  ],
+  golf: ["/cars/golf7.jpg"],
+  clio: ["/cars/clio5.jpg"],
+  suv: ["/cars/tucson.jpg"],
+  luxury: ["/cars/c-class.jpg"],
+  van: ["/cars/dokker.jpg"],
+  pickup: ["/cars/dmax.jpg"],
 };
 
 async function main() {
