@@ -31,12 +31,13 @@ export function Navbar({
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 sm:gap-3">
+        <nav className="flex items-center gap-0.5 sm:gap-3">
           <Link
             href="/cars"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+            className="rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
           >
-            Browse cars
+            Browse
+            <span className="hidden sm:inline"> cars</span>
           </Link>
 
           {user ? (
@@ -49,7 +50,7 @@ export function Navbar({
               </Link>
               <Link
                 href="/messages"
-                className="relative rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                className="relative rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
               >
                 Messages
                 {unreadCount > 0 && (
@@ -75,11 +76,11 @@ export function Navbar({
             <>
               <Link
                 href="/login"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                className="rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
               >
                 Log in
               </Link>
-              <Link href="/register" className="btn-primary">
+              <Link href="/register" className="btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
                 Sign up
               </Link>
             </>
