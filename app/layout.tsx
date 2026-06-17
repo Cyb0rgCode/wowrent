@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: "wowRent — Rent a car in Tunisia",
   description:
     "wowRent connects car owners and rental agencies with clients across Tunisia. Browse, book and pay securely.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "wowRent",
+    statusBarStyle: "default",
+  },
 };
 
 export default async function RootLayout({
