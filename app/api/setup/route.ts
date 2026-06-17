@@ -22,6 +22,9 @@ export async function GET(req: Request) {
     logs.push("Schema ready.");
 
     // 2. Seed demo data (skip if data exists)
+    // Always update car photos to latest URLs
+    await updateCarPhotos(prisma, logs);
+
     const userCount = await prisma.user.count().catch(() => 0);
     if (userCount > 0) {
       logs.push(`Database already has ${userCount} users — skipping seed.`);
@@ -282,4 +285,27 @@ async function seedData(prisma: PrismaClient) {
       },
     },
   });
+}
+
+const PHOTO_MAP: Record<string, string[]> = {
+  "Golf 7": PHOTOS.golf,
+  "Clio 5": PHOTOS.clio,
+  "Tucson": PHOTOS.suv,
+  "C200": PHOTOS.luxury,
+  "Dokker": PHOTOS.van,
+  "D-Max": PHOTOS.pickup,
+};
+
+async function updateCarPhotos(prisma: PrismaClient, logs: string[]) {
+  let updated = 0;
+  for (const [model, photos] of Object.entries(PHOTO_MAP)) {
+    const result = await prisma.car.updateMany({
+      where: { model },
+      data: { photos },
+    });
+    updated += result.count;
+  }
+  if (updated > 0) {
+    logs.push(`Updated photos on ${updated} car(s).`);
+  }
 }
