@@ -17,16 +17,16 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-start gap-0">
-          <div className="relative h-10 w-auto overflow-visible">
+        <Link href="/" className="flex items-center gap-0">
+          <div className="relative overflow-visible" style={{ width: "auto", height: "40px", marginBottom: "-14px" }}>
             <img
               src="/logo.svg"
               alt="wow"
-              className="h-14 w-auto"
-              style={{ marginTop: "-2px" }}
+              className="w-auto"
+              style={{ height: "52px", marginTop: "-4px" }}
             />
           </div>
-          <span className="mt-[3px] text-2xl font-extrabold leading-none text-brand-600">
+          <span className="text-2xl font-extrabold leading-none text-brand-600">
             Rent
           </span>
         </Link>
