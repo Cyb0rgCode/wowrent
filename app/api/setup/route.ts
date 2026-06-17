@@ -175,26 +175,26 @@ async function createSchema(prisma: PrismaClient) {
 
 const PHOTOS = {
   golf: [
-    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80",
-    "https://images.unsplash.com/photo-1542362567-b07e54358753?w=1200&q=80",
+    "https://images.unsplash.com/photo-1619976215249-0cba7e798bdf?w=1200&q=80",
+    "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1200&q=80",
   ],
   clio: [
-    "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&q=80",
-    "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=1200&q=80",
+    "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=1200&q=80",
   ],
   suv: [
-    "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200&q=80",
-    "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=80",
+    "https://images.unsplash.com/photo-1622838320197-0f4845354bba?w=1200&q=80",
+    "https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?w=1200&q=80",
   ],
   luxury: [
-    "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&q=80",
-    "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=1200&q=80",
+    "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=1200&q=80",
   ],
   van: [
-    "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=1200&q=80",
+    "https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=1200&q=80",
   ],
   pickup: [
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
+    "https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=1200&q=80",
   ],
 };
 
