@@ -2,10 +2,12 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDateTime } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 
 export const metadata = { title: "Messages — wowRent" };
 
 export default async function MessagesPage() {
+  const t = getDict();
   const user = await requireUser();
 
   const conversations = await prisma.conversation.findMany({
@@ -29,11 +31,11 @@ export default async function MessagesPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold">Messages</h1>
+      <h1 className="text-2xl font-bold">{t.messages.title}</h1>
 
       {conversations.length === 0 ? (
         <div className="card mt-6 p-10 text-center text-gray-500">
-          No conversations yet. Message a car owner from any listing.
+          {t.messages.empty}
         </div>
       ) : (
         <ul className="mt-6 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white">
@@ -60,10 +62,12 @@ export default async function MessagesPage() {
                       )}
                     </div>
                     {c.car && (
-                      <p className="text-xs text-gray-400">Re: {c.car.title}</p>
+                      <p className="text-xs text-gray-400">
+                        {t.messages.rePrefix} {c.car.title}
+                      </p>
                     )}
                     <p className="truncate text-sm text-gray-500">
-                      {last ? last.body : "No messages yet"}
+                      {last ? last.body : t.messages.noMessagesYet}
                     </p>
                   </div>
                   {unread > 0 && (

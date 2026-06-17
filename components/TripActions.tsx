@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function TripActions({
   bookingId,
@@ -16,11 +17,12 @@ export function TripActions({
   carId: string;
 }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [busy, setBusy] = useState(false);
   const [showReview, setShowReview] = useState(false);
 
   async function cancel() {
-    if (!confirm("Cancel this booking?")) return;
+    if (!confirm(t.tripActions.confirmCancel)) return;
     setBusy(true);
     await fetch(`/api/bookings/${bookingId}`, {
       method: "PATCH",
@@ -35,7 +37,7 @@ export function TripActions({
     <div className="flex flex-wrap items-center gap-2">
       {status === "PENDING" && (
         <Link href={`/bookings/${bookingId}/pay`} className="btn-primary px-3 py-1.5 text-xs">
-          Complete payment
+          {t.tripActions.completePayment}
         </Link>
       )}
       {(status === "PENDING" || status === "CONFIRMED") && (
@@ -44,7 +46,7 @@ export function TripActions({
           disabled={busy}
           className="btn-secondary px-3 py-1.5 text-xs"
         >
-          Cancel
+          {t.tripActions.cancel}
         </button>
       )}
       {status === "COMPLETED" && !hasReview && (
@@ -52,17 +54,17 @@ export function TripActions({
           onClick={() => setShowReview(true)}
           className="btn-primary px-3 py-1.5 text-xs"
         >
-          Leave a review
+          {t.tripActions.leaveReview}
         </button>
       )}
       {status === "COMPLETED" && hasReview && (
-        <span className="text-xs text-gray-500">✓ Reviewed</span>
+        <span className="text-xs text-gray-500">{t.tripActions.reviewed}</span>
       )}
       <Link
         href={`/cars/${carId}`}
         className="btn-secondary px-3 py-1.5 text-xs"
       >
-        View car
+        {t.tripActions.viewCar}
       </Link>
 
       {showReview && (
@@ -83,6 +85,7 @@ function ReviewModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [busy, setBusy] = useState(false);
@@ -99,7 +102,7 @@ function ReviewModal({
     const data = await res.json();
     setBusy(false);
     if (!res.ok) {
-      setError(data.error ?? "Could not submit review");
+      setError(data.error ?? t.tripActions.couldNotSubmit);
       return;
     }
     onClose();
@@ -109,7 +112,7 @@ function ReviewModal({
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
       <div className="card w-full max-w-md p-6">
-        <h3 className="text-lg font-semibold">Rate your trip</h3>
+        <h3 className="text-lg font-semibold">{t.tripActions.rateTrip}</h3>
         <div className="mt-3 flex gap-1 text-3xl">
           {[1, 2, 3, 4, 5].map((i) => (
             <button
@@ -125,17 +128,17 @@ function ReviewModal({
         <textarea
           className="input mt-3"
           rows={4}
-          placeholder="Share details of your experience (optional)"
+          placeholder={t.tripActions.reviewPlaceholder}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
         <div className="mt-4 flex justify-end gap-2">
           <button onClick={onClose} className="btn-secondary">
-            Cancel
+            {t.tripActions.cancel}
           </button>
           <button onClick={submit} disabled={busy} className="btn-primary">
-            {busy ? "Submitting…" : "Submit review"}
+            {busy ? t.tripActions.submitting : t.tripActions.submitReview}
           </button>
         </div>
       </div>

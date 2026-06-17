@@ -1,3 +1,5 @@
+import { getDict } from "@/lib/i18n/server";
+
 export function StarRating({
   rating,
   count,
@@ -7,6 +9,7 @@ export function StarRating({
   count?: number;
   size?: "sm" | "md";
 }) {
+  const t = getDict();
   const rounded = Math.round(rating * 2) / 2;
   const text = size === "sm" ? "text-xs" : "text-sm";
   const star = size === "sm" ? "text-sm" : "text-base";
@@ -20,7 +23,7 @@ export function StarRating({
       </span>
       {count !== undefined ? (
         <span className="text-gray-500">
-          {rating > 0 ? rating.toFixed(1) : "New"}
+          {rating > 0 ? rating.toFixed(1) : t.carCard.new}
           {count > 0 ? ` (${count})` : ""}
         </span>
       ) : (

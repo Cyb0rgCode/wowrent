@@ -2,13 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import {
-  formatTND,
-  formatDate,
-  CATEGORY_LABELS,
-  TRANSMISSION_LABELS,
-  FUEL_LABELS,
-} from "@/lib/format";
+import { formatDate } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 import { StarRating } from "@/components/StarRating";
 import { BookingWidget } from "@/components/BookingWidget";
 import { ContactOwnerButton } from "@/components/ContactOwnerButton";
@@ -32,6 +27,7 @@ export default async function CarDetailPage({
   if (!car || car.status !== "ACTIVE") notFound();
 
   const user = await getCurrentUser();
+  const t = getDict();
   const reviewCount = car.reviews.length;
   const avgRating =
     reviewCount > 0
@@ -43,7 +39,7 @@ export default async function CarDetailPage({
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <Link href="/cars" className="text-sm text-brand-600">
-        ← Back to results
+        {t.carDetail.back}
       </Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-3">
@@ -63,18 +59,32 @@ export default async function CarDetailPage({
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Spec label="Type" value={CATEGORY_LABELS[car.category]} />
               <Spec
-                label="Gearbox"
-                value={TRANSMISSION_LABELS[car.transmission]}
+                label={t.carDetail.type}
+                value={
+                  t.labels.category[
+                    car.category as keyof typeof t.labels.category
+                  ]
+                }
               />
-              <Spec label="Fuel" value={FUEL_LABELS[car.fuel]} />
-              <Spec label="Seats" value={`${car.seats}`} />
+              <Spec
+                label={t.carDetail.gearbox}
+                value={
+                  t.labels.transmission[
+                    car.transmission as keyof typeof t.labels.transmission
+                  ]
+                }
+              />
+              <Spec
+                label={t.carDetail.fuel}
+                value={t.labels.fuel[car.fuel as keyof typeof t.labels.fuel]}
+              />
+              <Spec label={t.carDetail.seats} value={`${car.seats}`} />
             </div>
 
             {car.description && (
               <div className="mt-6">
-                <h2 className="text-lg font-semibold">About this car</h2>
+                <h2 className="text-lg font-semibold">{t.carDetail.about}</h2>
                 <p className="mt-2 whitespace-pre-line text-gray-700">
                   {car.description}
                 </p>
@@ -83,16 +93,16 @@ export default async function CarDetailPage({
 
             <div className="mt-6 card p-4">
               <h2 className="text-sm font-semibold text-gray-500">
-                Listed by
+                {t.carDetail.listedBy}
               </h2>
               <div className="mt-1 flex items-center justify-between">
                 <div>
                   <p className="font-medium">{car.supplier.businessName}</p>
                   <p className="text-sm text-gray-500">
                     {car.supplier.type === "AGENCY"
-                      ? "Rental agency"
-                      : "Private owner"}
-                    {car.supplier.verified && " · ✅ Verified"}
+                      ? t.carDetail.agency
+                      : t.carDetail.privateOwner}
+                    {car.supplier.verified && t.carDetail.verified}
                   </p>
                 </div>
                 {!isOwner && (
@@ -108,11 +118,11 @@ export default async function CarDetailPage({
             {/* Reviews */}
             <div className="mt-8">
               <h2 className="text-lg font-semibold">
-                Reviews ({reviewCount})
+                {t.carDetail.reviews} ({reviewCount})
               </h2>
               {reviewCount === 0 ? (
                 <p className="mt-2 text-sm text-gray-500">
-                  No reviews yet. Reviews appear after completed trips.
+                  {t.carDetail.noReviews}
                 </p>
               ) : (
                 <ul className="mt-3 space-y-4">
@@ -141,13 +151,13 @@ export default async function CarDetailPage({
           <div className="sticky top-20">
             {isOwner ? (
               <div className="card p-6 text-center text-sm text-gray-600">
-                This is your listing.
+                {t.carDetail.yourListing}
                 <div className="mt-3">
                   <Link
                     href={`/dashboard/cars/${car.id}/edit`}
                     className="btn-secondary w-full"
                   >
-                    Edit listing
+                    {t.carDetail.editListing}
                   </Link>
                 </div>
               </div>

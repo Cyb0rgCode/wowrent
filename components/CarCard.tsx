@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { formatTND, CATEGORY_LABELS } from "@/lib/format";
+import { formatTND } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 import { StarRating } from "./StarRating";
 
 export type CarCardData = {
@@ -19,6 +20,7 @@ export type CarCardData = {
 
 export function CarCard({ car }: { car: CarCardData }) {
   const cover = car.photos[0];
+  const t = getDict();
   return (
     <Link
       href={`/cars/${car.id}`}
@@ -34,11 +36,12 @@ export function CarCard({ car }: { car: CarCardData }) {
           />
         ) : (
           <div className="grid h-full w-full place-items-center text-gray-400">
-            No photo
+            {t.carCard.noPhoto}
           </div>
         )}
         <span className="badge absolute left-3 top-3 bg-white/90 text-gray-800 shadow">
-          {CATEGORY_LABELS[car.category] ?? car.category}
+          {t.labels.category[car.category as keyof typeof t.labels.category] ??
+            car.category}
         </span>
       </div>
       <div className="space-y-2 p-4">
@@ -47,10 +50,14 @@ export function CarCard({ car }: { car: CarCardData }) {
         </div>
         <p className="text-sm text-gray-500">{car.location}</p>
         <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span>{car.seats} seats</span>
+          <span>
+            {car.seats} {t.carCard.seats}
+          </span>
           <span>·</span>
-          <span className="capitalize">
-            {car.transmission.toLowerCase()}
+          <span>
+            {t.labels.transmission[
+              car.transmission as keyof typeof t.labels.transmission
+            ] ?? car.transmission}
           </span>
           <span>·</span>
           <span className="truncate">{car.supplierName}</span>
@@ -61,7 +68,7 @@ export function CarCard({ car }: { car: CarCardData }) {
             <span className="text-base font-bold text-gray-900">
               {formatTND(car.pricePerDay)}
             </span>
-            <span className="text-gray-500"> / day</span>
+            <span className="text-gray-500"> {t.carCard.perDay}</span>
           </p>
         </div>
       </div>

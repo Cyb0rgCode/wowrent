@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { MessageThread } from "@/components/MessageThread";
+import { getDict } from "@/lib/i18n/server";
 
 export const metadata = { title: "Conversation — wowRent" };
 
@@ -11,6 +12,7 @@ export default async function ConversationPage({
 }: {
   params: { id: string };
 }) {
+  const t = getDict();
   const user = await requireUser();
 
   const convo = await prisma.conversation.findUnique({
@@ -34,7 +36,7 @@ export default async function ConversationPage({
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <Link href="/messages" className="text-sm text-brand-600">
-        ← All messages
+        {t.messages.allMessages}
       </Link>
 
       <div className="mt-3 card overflow-hidden">
@@ -45,7 +47,7 @@ export default async function ConversationPage({
               href={`/cars/${convo.car.id}`}
               className="text-xs text-brand-600"
             >
-              Re: {convo.car.title}
+              {t.messages.rePrefix} {convo.car.title}
             </Link>
           )}
         </div>

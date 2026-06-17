@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { formatTND } from "@/lib/format";
+import { useI18n } from "@/lib/i18n/client";
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 const COMMISSION = Number(
@@ -23,6 +24,7 @@ export function BookingWidget({
   isLoggedIn: boolean;
 }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export function BookingWidget({
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error ?? "Could not create booking");
+      setError(data.error ?? t.booking.couldNotCreate);
       return;
     }
     router.push(`/bookings/${data.id}/pay`);
@@ -64,12 +66,14 @@ export function BookingWidget({
     <div className="card p-6">
       <p className="text-xl font-bold">
         {formatTND(pricePerDay)}{" "}
-        <span className="text-sm font-normal text-gray-500">/ day</span>
+        <span className="text-sm font-normal text-gray-500">
+          {t.booking.perDay}
+        </span>
       </p>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div>
-          <label className="label">Pick-up</label>
+          <label className="label">{t.booking.pickup}</label>
           <input
             type="date"
             className="input"
@@ -79,7 +83,7 @@ export function BookingWidget({
           />
         </div>
         <div>
-          <label className="label">Return</label>
+          <label className="label">{t.booking.return}</label>
           <input
             type="date"
             className="input"
@@ -94,13 +98,13 @@ export function BookingWidget({
         <div className="mt-4 space-y-1 border-t border-gray-100 pt-4 text-sm">
           <Row
             label={`${formatTND(pricePerDay)} × ${quote.days} ${
-              quote.days === 1 ? "day" : "days"
+              quote.days === 1 ? t.booking.day : t.booking.days
             }`}
             value={formatTND(quote.subtotal)}
           />
-          <Row label="Service fee" value={formatTND(quote.serviceFee)} />
+          <Row label={t.booking.serviceFee} value={formatTND(quote.serviceFee)} />
           <div className="flex justify-between border-t border-gray-100 pt-2 font-semibold">
-            <span>Total</span>
+            <span>{t.booking.total}</span>
             <span>{formatTND(quote.total)}</span>
           </div>
         </div>
@@ -118,13 +122,13 @@ export function BookingWidget({
         className="btn-primary mt-4 w-full"
       >
         {loading
-          ? "Reserving…"
+          ? t.booking.reserving
           : isLoggedIn
-            ? "Reserve & pay"
-            : "Log in to book"}
+            ? t.booking.reservePay
+            : t.booking.loginToBook}
       </button>
       <p className="mt-2 text-center text-xs text-gray-400">
-        You won&apos;t be charged until you confirm payment.
+        {t.booking.notCharged}
       </p>
     </div>
   );

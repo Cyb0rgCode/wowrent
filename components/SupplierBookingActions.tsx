@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function SupplierBookingActions({
   bookingId,
@@ -10,11 +11,12 @@ export function SupplierBookingActions({
   bookingId: string;
   status: string;
 }) {
+  const { t } = useI18n();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   async function act(action: "complete" | "cancel") {
-    if (action === "cancel" && !confirm("Cancel this booking?")) return;
+    if (action === "cancel" && !confirm(t.supplierBooking.confirmCancel)) return;
     setBusy(true);
     await fetch(`/api/bookings/${bookingId}`, {
       method: "PATCH",
@@ -33,14 +35,14 @@ export function SupplierBookingActions({
           disabled={busy}
           className="btn-primary px-3 py-1.5 text-xs"
         >
-          Mark completed
+          {t.supplierBooking.markCompleted}
         </button>
         <button
           onClick={() => act("cancel")}
           disabled={busy}
           className="btn-secondary px-3 py-1.5 text-xs"
         >
-          Cancel
+          {t.supplierBooking.cancel}
         </button>
       </div>
     );
@@ -53,7 +55,7 @@ export function SupplierBookingActions({
         disabled={busy}
         className="btn-secondary px-3 py-1.5 text-xs"
       >
-        Cancel
+        {t.supplierBooking.cancel}
       </button>
     );
   }

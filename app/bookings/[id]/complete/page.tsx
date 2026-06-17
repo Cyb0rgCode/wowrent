@@ -4,12 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { finalizeBookingPayment } from "@/lib/payments";
 import { formatTND, formatDate } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 
 export default async function CompletePage({
   params,
 }: {
   params: { id: string };
 }) {
+  const t = getDict();
   const user = await requireUser();
 
   const booking = await prisma.booking.findUnique({
@@ -33,12 +35,10 @@ export default async function CompletePage({
       </div>
 
       <h1 className="mt-5 text-2xl font-bold">
-        {paid ? "Booking confirmed!" : "Payment pending"}
+        {paid ? t.payment.confirmedTitle : t.payment.pendingTitle}
       </h1>
       <p className="mt-2 text-gray-600">
-        {paid
-          ? "Your trip is booked. The owner has been notified."
-          : "We haven't received confirmation of your payment yet. If you completed it, refresh in a moment."}
+        {paid ? t.payment.confirmedBody : t.payment.pendingBody}
       </p>
 
       <div className="card mt-6 p-5 text-left">
@@ -48,17 +48,17 @@ export default async function CompletePage({
           {formatDate(booking.startDate)} → {formatDate(booking.endDate)}
         </p>
         <p className="mt-2 font-semibold">
-          Total paid: {formatTND(booking.total)}
+          {t.payment.totalPaid} {formatTND(booking.total)}
         </p>
       </div>
 
       <div className="mt-6 flex justify-center gap-3">
         <Link href="/trips" className="btn-primary">
-          View my trips
+          {t.payment.viewMyTrips}
         </Link>
         {!paid && (
           <Link href={`/bookings/${booking.id}/pay`} className="btn-secondary">
-            Try payment again
+            {t.payment.tryAgain}
           </Link>
         )}
       </div>

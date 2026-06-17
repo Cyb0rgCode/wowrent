@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 type CarValues = {
   id?: string;
@@ -37,6 +38,7 @@ const EMPTY: CarValues = {
 };
 
 export function CarForm({ initial }: { initial?: CarValues }) {
+  const { t } = useI18n();
   const router = useRouter();
   const isEdit = Boolean(initial?.id);
   const [v, setV] = useState<CarValues>(initial ?? EMPTY);
@@ -60,7 +62,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
     const data = await res.json();
     setUploading(false);
     if (!res.ok) {
-      setError(data.error ?? "Upload failed");
+      setError(data.error ?? t.carForm.uploadFailed);
       return;
     }
     set("photos", [...v.photos, ...data.urls]);
@@ -70,7 +72,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
     const url = photoUrl.trim();
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) {
-      setError("Image URL must start with http:// or https://");
+      setError(t.carForm.invalidUrl);
       return;
     }
     if (!v.photos.includes(url)) set("photos", [...v.photos, url]);
@@ -108,7 +110,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error ?? "Could not save car");
+      setError(data.error ?? t.carForm.couldNotSave);
       return;
     }
     router.push("/dashboard/cars");
@@ -118,10 +120,10 @@ export function CarForm({ initial }: { initial?: CarValues }) {
   return (
     <form onSubmit={handleSubmit} className="card space-y-5 p-6">
       <div>
-        <label className="label">Listing title</label>
+        <label className="label">{t.carForm.listingTitle}</label>
         <input
           className="input"
-          placeholder="e.g. Volkswagen Golf 7 — Automatic"
+          placeholder={t.carForm.listingTitlePlaceholder}
           value={v.title}
           onChange={(e) => set("title", e.target.value)}
           required
@@ -130,7 +132,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="label">Make</label>
+          <label className="label">{t.carForm.make}</label>
           <input
             className="input"
             value={v.make}
@@ -139,7 +141,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
           />
         </div>
         <div>
-          <label className="label">Model</label>
+          <label className="label">{t.carForm.model}</label>
           <input
             className="input"
             value={v.model}
@@ -151,7 +153,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div>
-          <label className="label">Year</label>
+          <label className="label">{t.carForm.year}</label>
           <input
             type="number"
             className="input"
@@ -161,7 +163,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
           />
         </div>
         <div>
-          <label className="label">Seats</label>
+          <label className="label">{t.carForm.seats}</label>
           <input
             type="number"
             className="input"
@@ -171,7 +173,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
           />
         </div>
         <div>
-          <label className="label">Price / day (TND)</label>
+          <label className="label">{t.carForm.pricePerDay}</label>
           <input
             type="number"
             step="0.1"
@@ -182,7 +184,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
           />
         </div>
         <div>
-          <label className="label">Location</label>
+          <label className="label">{t.carForm.location}</label>
           <input
             className="input"
             value={v.location}
@@ -194,7 +196,7 @@ export function CarForm({ initial }: { initial?: CarValues }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
-          <label className="label">Category</label>
+          <label className="label">{t.carForm.category}</label>
           <select
             className="input"
             value={v.category}
@@ -203,51 +205,51 @@ export function CarForm({ initial }: { initial?: CarValues }) {
             {["ECONOMY", "COMPACT", "SEDAN", "SUV", "LUXURY", "VAN", "PICKUP"].map(
               (c) => (
                 <option key={c} value={c}>
-                  {c[0] + c.slice(1).toLowerCase()}
+                  {t.labels.category[c as keyof typeof t.labels.category]}
                 </option>
               ),
             )}
           </select>
         </div>
         <div>
-          <label className="label">Gearbox</label>
+          <label className="label">{t.carForm.gearbox}</label>
           <select
             className="input"
             value={v.transmission}
             onChange={(e) => set("transmission", e.target.value)}
           >
-            <option value="MANUAL">Manual</option>
-            <option value="AUTOMATIC">Automatic</option>
+            <option value="MANUAL">{t.labels.transmission.MANUAL}</option>
+            <option value="AUTOMATIC">{t.labels.transmission.AUTOMATIC}</option>
           </select>
         </div>
         <div>
-          <label className="label">Fuel</label>
+          <label className="label">{t.carForm.fuel}</label>
           <select
             className="input"
             value={v.fuel}
             onChange={(e) => set("fuel", e.target.value)}
           >
-            <option value="GASOLINE">Gasoline</option>
-            <option value="DIESEL">Diesel</option>
-            <option value="HYBRID">Hybrid</option>
-            <option value="ELECTRIC">Electric</option>
+            <option value="GASOLINE">{t.labels.fuel.GASOLINE}</option>
+            <option value="DIESEL">{t.labels.fuel.DIESEL}</option>
+            <option value="HYBRID">{t.labels.fuel.HYBRID}</option>
+            <option value="ELECTRIC">{t.labels.fuel.ELECTRIC}</option>
           </select>
         </div>
       </div>
 
       <div>
-        <label className="label">Description</label>
+        <label className="label">{t.carForm.description}</label>
         <textarea
           className="input"
           rows={4}
           value={v.description}
           onChange={(e) => set("description", e.target.value)}
-          placeholder="Condition, mileage policy, pickup details…"
+          placeholder={t.carForm.descriptionPlaceholder}
         />
       </div>
 
       <div>
-        <label className="label">Photos</label>
+        <label className="label">{t.carForm.photos}</label>
         <input
           type="file"
           accept="image/*"
@@ -256,13 +258,13 @@ export function CarForm({ initial }: { initial?: CarValues }) {
           className="block text-sm"
         />
         {uploading && (
-          <p className="mt-1 text-xs text-gray-500">Uploading…</p>
+          <p className="mt-1 text-xs text-gray-500">{t.carForm.uploading}</p>
         )}
         <div className="mt-2 flex gap-2">
           <input
             type="url"
             className="input flex-1"
-            placeholder="…or paste an image URL (https://…)"
+            placeholder={t.carForm.photoUrlPlaceholder}
             value={photoUrl}
             onChange={(e) => setPhotoUrl(e.target.value)}
             onKeyDown={(e) => {
@@ -273,12 +275,10 @@ export function CarForm({ initial }: { initial?: CarValues }) {
             }}
           />
           <button type="button" onClick={addPhotoUrl} className="btn-secondary">
-            Add
+            {t.carForm.add}
           </button>
         </div>
-        <p className="mt-1 text-xs text-gray-400">
-          On the hosted demo, use image URLs (file uploads need local storage).
-        </p>
+        <p className="mt-1 text-xs text-gray-400">{t.carForm.photosNote}</p>
         {v.photos.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {v.photos.map((p) => (
@@ -303,14 +303,14 @@ export function CarForm({ initial }: { initial?: CarValues }) {
       </div>
 
       <div>
-        <label className="label">Status</label>
+        <label className="label">{t.carForm.status}</label>
         <select
           className="input sm:w-48"
           value={v.status}
           onChange={(e) => set("status", e.target.value)}
         >
-          <option value="ACTIVE">Active (visible)</option>
-          <option value="HIDDEN">Hidden</option>
+          <option value="ACTIVE">{t.carForm.statusActive}</option>
+          <option value="HIDDEN">{t.carForm.statusHidden}</option>
         </select>
       </div>
 
@@ -322,14 +322,18 @@ export function CarForm({ initial }: { initial?: CarValues }) {
 
       <div className="flex gap-3">
         <button type="submit" className="btn-primary" disabled={loading}>
-          {loading ? "Saving…" : isEdit ? "Save changes" : "Publish listing"}
+          {loading
+            ? t.carForm.saving
+            : isEdit
+              ? t.carForm.saveChanges
+              : t.carForm.publishListing}
         </button>
         <button
           type="button"
           onClick={() => router.push("/dashboard/cars")}
           className="btn-secondary"
         >
-          Cancel
+          {t.carForm.cancel}
         </button>
       </div>
     </form>

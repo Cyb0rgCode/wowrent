@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireSupplier } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CarForm } from "@/components/CarForm";
+import { getDict } from "@/lib/i18n/server";
 
 export const metadata = { title: "Edit car — wowRent" };
 
@@ -10,13 +11,14 @@ export default async function EditCarPage({
 }: {
   params: { id: string };
 }) {
+  const t = getDict();
   const user = await requireSupplier();
   const car = await prisma.car.findUnique({ where: { id: params.id } });
   if (!car || car.supplierId !== user.supplierProfile!.id) notFound();
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Edit listing</h1>
+      <h1 className="text-2xl font-bold">{t.dashboardCars.editTitle}</h1>
       <div className="mt-6">
         <CarForm
           initial={{

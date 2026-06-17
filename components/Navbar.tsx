@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { LogoutButton } from "./LogoutButton";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useI18n } from "@/lib/i18n/client";
 
 type NavUser = {
   name: string;
@@ -14,6 +18,7 @@ export function Navbar({
   user: NavUser | null;
   unreadCount: number;
 }) {
+  const { t } = useI18n();
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -36,8 +41,8 @@ export function Navbar({
             href="/cars"
             className="rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
           >
-            Browse
-            <span className="hidden sm:inline"> cars</span>
+            {t.nav.browse}
+            <span className="hidden sm:inline"> {t.nav.browseCarsSuffix}</span>
           </Link>
 
           {user ? (
@@ -46,13 +51,13 @@ export function Navbar({
                 href="/trips"
                 className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 sm:block"
               >
-                My trips
+                {t.nav.myTrips}
               </Link>
               <Link
                 href="/messages"
                 className="relative rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
               >
-                Messages
+                {t.nav.messages}
                 {unreadCount > 0 && (
                   <span className="absolute -right-0 -top-0 grid h-5 min-w-5 place-items-center rounded-full bg-brand-600 px-1 text-[10px] font-bold text-white">
                     {unreadCount > 9 ? "9+" : unreadCount}
@@ -63,12 +68,13 @@ export function Navbar({
                 href="/dashboard"
                 className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 sm:block"
               >
-                {user.isSupplier ? "Dashboard" : "Host"}
+                {user.isSupplier ? t.nav.dashboard : t.nav.host}
               </Link>
               <div className="ml-1 flex items-center gap-2">
                 <span className="hidden text-sm text-gray-500 md:inline">
                   {user.name.split(" ")[0]}
                 </span>
+                <LanguageSwitcher />
                 <LogoutButton />
               </div>
             </>
@@ -78,11 +84,12 @@ export function Navbar({
                 href="/login"
                 className="rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:px-3 sm:py-2 sm:text-sm"
               >
-                Log in
+                {t.nav.login}
               </Link>
               <Link href="/register" className="btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
-                Sign up
+                {t.nav.signup}
               </Link>
+              <LanguageSwitcher />
             </>
           )}
         </nav>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function PayButton({ bookingId }: { bookingId: string }) {
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +18,7 @@ export function PayButton({ bookingId }: { bookingId: string }) {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ?? "Could not start payment");
+      setError(data.error ?? t.payment.couldNotStart);
       setLoading(false);
       return;
     }
@@ -36,7 +38,7 @@ export function PayButton({ bookingId }: { bookingId: string }) {
         disabled={loading}
         className="btn-primary w-full"
       >
-        {loading ? "Redirecting…" : "Pay with Konnect"}
+        {loading ? t.payment.redirecting : t.payment.payWithKonnect}
       </button>
     </div>
   );

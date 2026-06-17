@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { formatDateTime } from "@/lib/format";
+import { useI18n } from "@/lib/i18n/client";
 
 type Message = {
   id: string;
@@ -17,6 +18,7 @@ export function MessageThread({
   conversationId: string;
   currentUserId: string;
 }) {
+  const { t } = useI18n();
   const [messages, setMessages] = useState<Message[]>([]);
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
@@ -71,7 +73,7 @@ export function MessageThread({
       <div className="flex-1 space-y-2 overflow-y-auto p-4">
         {messages.length === 0 ? (
           <p className="py-8 text-center text-sm text-gray-400">
-            No messages yet. Say hello 👋
+            {t.messages.threadEmpty}
           </p>
         ) : (
           messages.map((m) => {
@@ -110,7 +112,7 @@ export function MessageThread({
       >
         <input
           className="input flex-1"
-          placeholder="Type a message…"
+          placeholder={t.messages.inputPlaceholder}
           value={body}
           onChange={(e) => setBody(e.target.value)}
         />
@@ -119,7 +121,7 @@ export function MessageThread({
           disabled={sending || !body.trim()}
           className="btn-primary"
         >
-          Send
+          {t.messages.send}
         </button>
       </form>
     </div>

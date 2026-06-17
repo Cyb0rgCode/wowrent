@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
+  const { t } = useI18n();
   const params = useSearchParams();
   const next = params.get("next") || "/";
   const [loading, setLoading] = useState(false);
@@ -29,7 +31,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     setLoading(false);
 
     if (!res.ok) {
-      setError(data.error ?? "Something went wrong");
+      setError(data.error ?? t.auth.somethingWrong);
       return;
     }
 
@@ -42,7 +44,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       {mode === "register" && (
         <div>
           <label className="label" htmlFor="name">
-            Full name
+            {t.auth.fullName}
           </label>
           <input id="name" name="name" className="input" required />
         </div>
@@ -50,7 +52,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
       <div>
         <label className="label" htmlFor="email">
-          Email
+          {t.auth.email}
         </label>
         <input
           id="email"
@@ -65,7 +67,8 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       {mode === "register" && (
         <div>
           <label className="label" htmlFor="phone">
-            Phone <span className="text-gray-400">(optional)</span>
+            {t.auth.phone}{" "}
+            <span className="text-gray-400">{t.auth.optional}</span>
           </label>
           <input id="phone" name="phone" className="input" />
         </div>
@@ -73,7 +76,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
       <div>
         <label className="label" htmlFor="password">
-          Password
+          {t.auth.password}
         </label>
         <input
           id="password"
@@ -93,22 +96,26 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       )}
 
       <button type="submit" className="btn-primary w-full" disabled={loading}>
-        {loading ? "Please wait…" : mode === "login" ? "Log in" : "Create account"}
+        {loading
+          ? t.auth.pleaseWait
+          : mode === "login"
+            ? t.auth.login
+            : t.auth.createAccount}
       </button>
 
       <p className="text-center text-sm text-gray-600">
         {mode === "login" ? (
           <>
-            New to wowRent?{" "}
+            {t.auth.newToWowrent}{" "}
             <Link href="/register" className="font-medium text-brand-600">
-              Create an account
+              {t.auth.createOne}
             </Link>
           </>
         ) : (
           <>
-            Already have an account?{" "}
+            {t.auth.haveAccount}{" "}
             <Link href="/login" className="font-medium text-brand-600">
-              Log in
+              {t.auth.login}
             </Link>
           </>
         )}

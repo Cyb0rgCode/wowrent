@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function HomeSearch() {
   const router = useRouter();
+  const { t } = useI18n();
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
 
@@ -23,7 +25,7 @@ export function HomeSearch() {
     >
       <input
         className="input flex-1"
-        placeholder="Where? (e.g. Tunis, Sousse)"
+        placeholder={t.search.wherePlaceholder}
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       />
@@ -32,17 +34,17 @@ export function HomeSearch() {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       >
-        <option value="">Any type</option>
-        <option value="ECONOMY">Economy</option>
-        <option value="COMPACT">Compact</option>
-        <option value="SEDAN">Sedan</option>
-        <option value="SUV">SUV</option>
-        <option value="LUXURY">Luxury</option>
-        <option value="VAN">Van</option>
-        <option value="PICKUP">Pickup</option>
+        <option value="">{t.search.anyType}</option>
+        <option value="ECONOMY">{t.labels.category.ECONOMY}</option>
+        <option value="COMPACT">{t.labels.category.COMPACT}</option>
+        <option value="SEDAN">{t.labels.category.SEDAN}</option>
+        <option value="SUV">{t.labels.category.SUV}</option>
+        <option value="LUXURY">{t.labels.category.LUXURY}</option>
+        <option value="VAN">{t.labels.category.VAN}</option>
+        <option value="PICKUP">{t.labels.category.PICKUP}</option>
       </select>
       <button type="submit" className="btn-primary sm:w-32">
-        Search
+        {t.search.search}
       </button>
     </form>
   );

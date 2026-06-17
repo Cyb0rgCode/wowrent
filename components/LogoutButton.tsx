@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function LogoutButton() {
   const router = useRouter();
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
 
   async function handleLogout() {
@@ -20,7 +22,7 @@ export function LogoutButton() {
       disabled={loading}
       className="btn-secondary px-3 py-1.5 text-xs"
     >
-      {loading ? "…" : "Log out"}
+      {loading ? "…" : t.nav.logout}
     </button>
   );
 }

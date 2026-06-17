@@ -2,12 +2,14 @@ import Link from "next/link";
 import { requireSupplier } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatTND, formatDate, STATUS_BADGE } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 
 export const metadata = { title: "Dashboard — wowRent" };
 
 export default async function DashboardPage() {
   const user = await requireSupplier();
   const supplierId = user.supplierProfile!.id;
+  const t = getDict();
 
   const [carCount, bookings, earnings] = await Promise.all([
     prisma.car.count({ where: { supplierId } }),
@@ -37,28 +39,28 @@ export default async function DashboardPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold">
-        Welcome, {user.supplierProfile!.businessName}
+        {t.dashboard.welcome} {user.supplierProfile!.businessName}
       </h1>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <Stat label="Listed cars" value={`${carCount}`} />
-        <Stat label="Active bookings" value={`${activeCount}`} />
-        <Stat label="Net earnings" value={formatTND(net)} />
+        <Stat label={t.dashboard.listedCars} value={`${carCount}`} />
+        <Stat label={t.dashboard.activeBookings} value={`${activeCount}`} />
+        <Stat label={t.dashboard.netEarnings} value={formatTND(net)} />
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Recent bookings</h2>
+        <h2 className="text-lg font-semibold">{t.dashboard.recentBookings}</h2>
         <Link
           href="/dashboard/bookings"
           className="text-sm font-medium text-brand-600"
         >
-          View all →
+          {t.dashboard.viewAll}
         </Link>
       </div>
 
       {bookings.length === 0 ? (
         <div className="card mt-3 p-8 text-center text-gray-500">
-          No bookings yet. Make sure your cars are listed and active.
+          {t.dashboard.noBookings}
         </div>
       ) : (
         <ul className="mt-3 space-y-2">
@@ -76,7 +78,8 @@ export default async function DashboardPage() {
               </div>
               <div className="text-right">
                 <span className={`badge ${STATUS_BADGE[b.status]}`}>
-                  {b.status}
+                  {t.labels.status[b.status as keyof typeof t.labels.status] ??
+                    b.status}
                 </span>
                 <p className="mt-1 text-sm font-semibold">
                   {formatTND(b.total)}

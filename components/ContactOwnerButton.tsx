@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 export function ContactOwnerButton({
   carId,
@@ -13,6 +14,7 @@ export function ContactOwnerButton({
   isLoggedIn: boolean;
 }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
 
   async function handleContact() {
@@ -35,7 +37,7 @@ export function ContactOwnerButton({
 
   return (
     <button onClick={handleContact} disabled={loading} className="btn-secondary">
-      {loading ? "…" : "Message owner"}
+      {loading ? "…" : t.contact.message}
     </button>
   );
 }

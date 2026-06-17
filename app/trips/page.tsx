@@ -2,12 +2,14 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { formatTND, formatDate, STATUS_BADGE } from "@/lib/format";
+import { getDict } from "@/lib/i18n/server";
 import { TripActions } from "@/components/TripActions";
 
 export const metadata = { title: "My trips — wowRent" };
 
 export default async function TripsPage() {
   const user = await requireUser();
+  const t = getDict();
 
   const bookings = await prisma.booking.findMany({
     where: { clientId: user.id },
@@ -17,14 +19,14 @@ export default async function TripsPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-bold">My trips</h1>
+      <h1 className="text-2xl font-bold">{t.trips.title}</h1>
 
       {bookings.length === 0 ? (
         <div className="card mt-6 p-10 text-center text-gray-500">
-          You haven&apos;t booked any cars yet.
+          {t.trips.empty}
           <div className="mt-3">
             <Link href="/cars" className="btn-primary">
-              Browse cars
+              {t.trips.browseCars}
             </Link>
           </div>
         </div>
@@ -43,7 +45,7 @@ export default async function TripsPage() {
                     />
                   ) : (
                     <div className="grid h-28 w-full place-items-center rounded-lg bg-gray-100 text-xs text-gray-400 sm:w-44">
-                      No photo
+                      {t.trips.noPhoto}
                     </div>
                   )}
                 </Link>
@@ -60,13 +62,15 @@ export default async function TripsPage() {
                       <p className="text-sm text-gray-500">{b.car.location}</p>
                     </div>
                     <span className={`badge ${STATUS_BADGE[b.status]}`}>
-                      {b.status}
+                      {t.labels.status[
+                        b.status as keyof typeof t.labels.status
+                      ] ?? b.status}
                     </span>
                   </div>
 
                   <p className="mt-2 text-sm text-gray-600">
                     {formatDate(b.startDate)} → {formatDate(b.endDate)} ·{" "}
-                    {b.days} {b.days === 1 ? "day" : "days"}
+                    {b.days} {b.days === 1 ? t.trips.day : t.trips.days}
                   </p>
                   <p className="text-sm font-semibold">
                     {formatTND(b.total)}
