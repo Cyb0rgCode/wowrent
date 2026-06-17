@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" fill="currentColor">
+  <!-- W left -->
+  <path d="M0 8 L8 8 L16 42 L24 16 L32 42 L40 8 L48 8 L36 56 L28 56 L20 32 L12 56 L4 56 Z"/>
+  <!-- O center -->
+  <ellipse cx="60" cy="32" rx="14" ry="22" stroke="currentColor" stroke-width="8" fill="none"/>
+  <!-- W right -->
+  <path d="M72 8 L80 8 L88 42 L96 16 L104 42 L112 8 L120 8 L108 56 L100 56 L92 32 L84 56 L76 56 Z"/>
+  <!-- Left wheel -->
+  <circle cx="28" cy="62" r="8"/>
+  <!-- Right wheel -->
+  <circle cx="92" cy="62" r="8"/>
+</svg>
