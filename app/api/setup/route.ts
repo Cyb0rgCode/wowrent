@@ -177,12 +177,12 @@ async function createSchema(prisma: PrismaClient) {
 }
 
 const PHOTOS = {
-  golf: ["/cars/golf7.jpg"],
-  clio: ["/cars/clio5.jpg"],
-  suv: ["/cars/tucson.jpg"],
-  luxury: ["/cars/c-class.jpg"],
-  van: ["/cars/dokker.jpg"],
-  pickup: ["/cars/dmax.jpg"],
+  golf: [] as string[],
+  clio: [] as string[],
+  suv: [] as string[],
+  luxury: [] as string[],
+  van: [] as string[],
+  pickup: [] as string[],
 };
 
 async function seedData(prisma: PrismaClient) {
