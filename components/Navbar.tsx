@@ -22,7 +22,7 @@ export function Navbar({
             W
           </span>
           <span className="text-lg font-bold tracking-tight">
-            Wow<span className="text-brand-600">Rent</span>
+            wow<span className="text-brand-600">Rent</span>
           </span>
         </Link>
 

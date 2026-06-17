@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { MessageThread } from "@/components/MessageThread";
 
-export const metadata = { title: "Conversation — WowRent" };
+export const metadata = { title: "Conversation — wowRent" };
 
 export default async function ConversationPage({
   params,

@@ -3,7 +3,7 @@ import { requireSupplier } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatTND, formatDate, STATUS_BADGE } from "@/lib/format";
 
-export const metadata = { title: "Dashboard — WowRent" };
+export const metadata = { title: "Dashboard — wowRent" };
 
 export default async function DashboardPage() {
   const user = await requireSupplier();

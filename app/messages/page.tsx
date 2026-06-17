@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDateTime } from "@/lib/format";
 
-export const metadata = { title: "Messages — WowRent" };
+export const metadata = { title: "Messages — wowRent" };
 
 export default async function MessagesPage() {
   const user = await requireUser();

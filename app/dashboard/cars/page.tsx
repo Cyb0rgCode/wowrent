@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { formatTND, CATEGORY_LABELS } from "@/lib/format";
 import { DeleteCarButton } from "@/components/DeleteCarButton";
 
-export const metadata = { title: "My cars — WowRent" };
+export const metadata = { title: "My cars — wowRent" };
 
 export default async function MyCarsPage() {
   const user = await requireSupplier();

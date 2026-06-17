@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { formatTND, formatDate, STATUS_BADGE } from "@/lib/format";
 import { TripActions } from "@/components/TripActions";
 
-export const metadata = { title: "My trips — WowRent" };
+export const metadata = { title: "My trips — wowRent" };
 
 export default async function TripsPage() {
   const user = await requireUser();

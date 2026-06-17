@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatTND, formatDate, STATUS_BADGE } from "@/lib/format";
 import { SupplierBookingActions } from "@/components/SupplierBookingActions";
 
-export const metadata = { title: "Bookings — WowRent" };
+export const metadata = { title: "Bookings — wowRent" };
 
 export default async function SupplierBookingsPage() {
   const user = await requireSupplier();

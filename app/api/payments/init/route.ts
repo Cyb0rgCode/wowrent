@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const init = await initPayment({
       amountTnd: booking.total,
       orderId: booking.id,
-      description: `WowRent booking ${booking.id} — ${booking.car.title}`,
+      description: `wowRent booking ${booking.id} — ${booking.car.title}`,
       firstName,
       lastName: rest.join(" ") || firstName,
       email: user.email,

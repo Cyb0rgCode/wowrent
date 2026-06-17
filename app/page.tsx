@@ -15,7 +15,7 @@ export default async function HomePage() {
             Rent the perfect car, anywhere in Tunisia.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-brand-50">
-            WowRent connects you with trusted car owners and rental agencies.
+            wowRent connects you with trusted car owners and rental agencies.
             Browse, book and pay securely with Konnect.
           </p>
           <div className="mt-8 max-w-3xl">

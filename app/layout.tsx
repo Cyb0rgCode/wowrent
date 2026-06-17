@@ -9,9 +9,9 @@ import { prisma } from "@/lib/prisma";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "WowRent — Rent a car in Tunisia",
+  title: "wowRent — Rent a car in Tunisia",
   description:
-    "WowRent connects car owners and rental agencies with clients across Tunisia. Browse, book and pay securely.",
+    "wowRent connects car owners and rental agencies with clients across Tunisia. Browse, book and pay securely.",
 };
 
 export default async function RootLayout({

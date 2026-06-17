@@ -2,7 +2,7 @@ import { findCars, type CarFilters } from "@/lib/cars";
 import { CarCard } from "@/components/CarCard";
 import { CarFiltersBar } from "@/components/CarFiltersBar";
 
-export const metadata = { title: "Browse cars — WowRent" };
+export const metadata = { title: "Browse cars — wowRent" };
 
 function parseFilters(searchParams: Record<string, string | undefined>): CarFilters {
   return {

@@ -99,7 +99,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       <p className="text-center text-sm text-gray-600">
         {mode === "login" ? (
           <>
-            New to WowRent?{" "}
+            New to wowRent?{" "}
             <Link href="/register" className="font-medium text-brand-600">
               Create an account
             </Link>

@@ -3,7 +3,7 @@ import { requireSupplier } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CarForm } from "@/components/CarForm";
 
-export const metadata = { title: "Edit car — WowRent" };
+export const metadata = { title: "Edit car — wowRent" };
 
 export default async function EditCarPage({
   params,

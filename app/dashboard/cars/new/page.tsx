@@ -1,7 +1,7 @@
 import { requireSupplier } from "@/lib/auth";
 import { CarForm } from "@/components/CarForm";
 
-export const metadata = { title: "List a car — WowRent" };
+export const metadata = { title: "List a car — wowRent" };
 
 export default async function NewCarPage() {
   await requireSupplier();
