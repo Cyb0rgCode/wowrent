@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   description:
     "wowRent connects car owners and rental agencies with clients across Tunisia. Browse, book and pay securely.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     title: "wowRent",
