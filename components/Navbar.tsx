@@ -22,19 +22,22 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-0">
-          <div className="relative overflow-visible" style={{ width: "auto", height: "24px", marginBottom: "-7px" }}>
-            <img
-              src="/logo.svg"
-              alt="wow"
-              className="w-auto"
-              style={{ height: "30px", marginTop: "-3px" }}
-            />
-          </div>
-          <span className="text-2xl font-extrabold leading-none text-brand-600">
-            Rent
-          </span>
-        </Link>
+        <div className="flex items-center gap-1.5">
+          <Link href="/" className="flex items-center gap-0">
+            <div className="relative overflow-visible" style={{ width: "auto", height: "24px", marginBottom: "-7px" }}>
+              <img
+                src="/logo.svg"
+                alt="wow"
+                className="w-auto"
+                style={{ height: "30px", marginTop: "-3px" }}
+              />
+            </div>
+            <span className="text-2xl font-extrabold leading-none text-brand-600">
+              Rent
+            </span>
+          </Link>
+          <LanguageSwitcher />
+        </div>
 
         <nav className="flex items-center gap-0.5 sm:gap-3">
           <Link
@@ -74,7 +77,6 @@ export function Navbar({
                 <span className="hidden text-sm text-gray-500 md:inline">
                   {user.name.split(" ")[0]}
                 </span>
-                <LanguageSwitcher />
                 <LogoutButton />
               </div>
             </>
@@ -89,7 +91,6 @@ export function Navbar({
               <Link href="/register" className="btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
                 {t.nav.signup}
               </Link>
-              <LanguageSwitcher />
             </>
           )}
         </nav>
