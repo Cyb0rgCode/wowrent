@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
@@ -24,6 +25,8 @@ export async function GET(req: Request) {
     // 2. Seed demo data (skip if data exists)
     // Always update car photos to latest URLs
     await updateCarPhotos(prisma, logs);
+
+    revalidatePath("/", "layout");
 
     const userCount = await prisma.user.count().catch(() => 0);
     if (userCount > 0) {
@@ -285,15 +288,8 @@ const PHOTO_MAP: Record<string, string[]> = {
 };
 
 async function updateCarPhotos(prisma: PrismaClient, logs: string[]) {
-  let updated = 0;
-  for (const [model, photos] of Object.entries(PHOTO_MAP)) {
-    const result = await prisma.car.updateMany({
-      where: { model },
-      data: { photos },
-    });
-    updated += result.count;
-  }
-  if (updated > 0) {
-    logs.push(`Updated photos on ${updated} car(s).`);
-  }
+  const result = await prisma.car.updateMany({
+    data: { photos: [] },
+  });
+  logs.push(`Cleared photos on ${result.count} car(s).`);
 }
