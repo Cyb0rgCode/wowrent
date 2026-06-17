@@ -23,7 +23,7 @@ export function Navbar({
               src="/logo.svg"
               alt="wow"
               className="w-auto"
-              style={{ height: "30px", marginTop: "-4px" }}
+              style={{ height: "30px", marginTop: "-3px" }}
             />
           </div>
           <span className="text-2xl font-extrabold leading-none text-brand-600">
