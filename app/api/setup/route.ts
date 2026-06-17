@@ -180,12 +180,12 @@ async function createSchema(prisma: PrismaClient) {
 }
 
 const PHOTOS = {
-  golf: [] as string[],
-  clio: [] as string[],
-  suv: [] as string[],
-  luxury: [] as string[],
-  van: [] as string[],
-  pickup: [] as string[],
+  golf: ["/api/img?id=golf7"],
+  clio: ["/api/img?id=clio5"],
+  suv: ["/api/img?id=tucson"],
+  luxury: ["/api/img?id=c-class"],
+  van: ["/api/img?id=dokker"],
+  pickup: ["/api/img?id=dmax"],
 };
 
 async function seedData(prisma: PrismaClient) {
@@ -288,8 +288,13 @@ const PHOTO_MAP: Record<string, string[]> = {
 };
 
 async function updateCarPhotos(prisma: PrismaClient, logs: string[]) {
-  const result = await prisma.car.updateMany({
-    data: { photos: [] },
-  });
-  logs.push(`Cleared photos on ${result.count} car(s).`);
+  let updated = 0;
+  for (const [model, photos] of Object.entries(PHOTO_MAP)) {
+    const result = await prisma.car.updateMany({
+      where: { model },
+      data: { photos },
+    });
+    updated += result.count;
+  }
+  logs.push(`Updated photos on ${updated} car(s).`);
 }

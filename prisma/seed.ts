@@ -4,12 +4,12 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 const PHOTOS = {
-  golf: [] as string[],
-  clio: [] as string[],
-  suv: [] as string[],
-  luxury: [] as string[],
-  van: [] as string[],
-  pickup: [] as string[],
+  golf: ["/api/img?id=golf7"],
+  clio: ["/api/img?id=clio5"],
+  suv: ["/api/img?id=tucson"],
+  luxury: ["/api/img?id=c-class"],
+  van: ["/api/img?id=dokker"],
+  pickup: ["/api/img?id=dmax"],
 };
 
 async function main() {
