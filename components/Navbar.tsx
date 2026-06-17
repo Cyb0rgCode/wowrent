@@ -18,12 +18,12 @@ export function Navbar({
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-0">
-          <div className="relative overflow-visible" style={{ width: "auto", height: "32px", marginBottom: "-10px" }}>
+          <div className="relative overflow-visible" style={{ width: "auto", height: "28px", marginBottom: "-8px" }}>
             <img
               src="/logo.svg"
               alt="wow"
               className="w-auto"
-              style={{ height: "42px", marginTop: "-7px" }}
+              style={{ height: "36px", marginTop: "-5px" }}
             />
           </div>
           <span className="text-2xl font-extrabold leading-none text-brand-600">
