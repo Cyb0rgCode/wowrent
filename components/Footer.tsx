@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n/client";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Footer() {
   const { t } = useI18n();
@@ -10,7 +11,10 @@ export function Footer() {
         <p>
           © {new Date().getFullYear()} wowRent — {t.footer.rights}
         </p>
-        <p>{t.footer.payments}</p>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <p>{t.footer.payments}</p>
+        </div>
       </div>
     </footer>
   );

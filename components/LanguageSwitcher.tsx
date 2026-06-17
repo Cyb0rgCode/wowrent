@@ -23,14 +23,14 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex flex-col rounded-lg border border-gray-200 text-[10px] font-semibold leading-none">
+    <div className="flex items-center rounded-lg border border-gray-200 text-xs font-semibold">
       {(["en", "fr"] as const).map((l) => (
         <button
           key={l}
           type="button"
           onClick={() => change(l)}
           disabled={busy}
-          className={`rounded-md px-1.5 py-0.5 transition ${
+          className={`rounded-md px-2 py-1 transition ${
             locale === l
               ? "bg-brand-600 text-white"
               : "text-gray-600 hover:bg-gray-100"
